@@ -1,73 +1,140 @@
 import 'package:flutter/material.dart';
+//import 'package:email_validator/email_validator.dart';
 import 'package:flutter_application_1/main.dart';
 
-
 void main() {
-  runApp( kayit());
+  runApp(const kayit());
 }
 
-class kayit extends StatelessWidget {
+class kayit extends StatefulWidget {
   const kayit({Key? key}) : super(key: key);
 
   @override
+  _kayit createState() => _kayit();
+}
+
+class _kayit extends State<kayit> {
+  String _email = '', _password = '', _userName = '';
+  final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'swapp',
-        theme: ThemeData(
-          primaryColor: Colors.purple,
-        ),
-        home: Scaffold(
-          body: Container(
-            child: ListView(
-              children: [
-                Container(
-                  // height: 60,
-                  margin: EdgeInsets.only(top: 20),
-                  child: Image.asset('assets/images/logo.png'),
+    return Scaffold(
+        /* appBar: AppBar(
+        title: Text('Textform field kullanimi'),
+      ), */
+        body: Container(
+      child: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            width: 70,
+            height: 70,
+            child: Image.asset('assets/images/logo.png'),
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 150, left: 10, right: 10),
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    TextFormField(
+                      //initialValue: 'emrealtunbilek',
+                      decoration: InputDecoration(
+                          //errorStyle: TextStyle(color: Colors.orange),
+                          border: OutlineInputBorder(),
+                          labelText: 'Username',
+                          hintText: 'Username'),
+                      onSaved: (deger) {
+                        _userName = deger!;
+                      },
+                   /*    validator: (deger) {
+                        if (deger!.length < 4) {
+                          return 'Username en az 4 karakter olmalı';
+                        } else
+                          return null;
+                      }, */
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      //initialValue: 'emrealtunbilek@gmail.com',
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          //errorStyle: TextStyle(color: Colors.orange),
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                          hintText: 'Email'),
+                      onSaved: (deger) {
+                        _email = deger!;
+                      },
+                     /*  validator: (deger) {
+                        if (deger!.isEmpty) {
+                          return 'email boş olamaz';
+                        } else if (!EmailValidator.validate(deger)) {
+                          return 'Geçerli mail giriniz';
+                        } else
+                          return null;
+                      }, */
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      //initialValue: 'emrealtunbilek@gmail.com',
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          //errorStyle: TextStyle(color: Colors.orange),
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                          hintText: 'Password'),
+                      onSaved: (deger) {
+                        _password = deger!;
+                      },
+                      validator: (deger) {
+                        if (deger!.length < 6) {
+                          return 'Şifre ne az 6 karakter olmalı';
+                        } else
+                          return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        bool _validate = _formKey.currentState!.validate();
+                        if (_validate) {
+                          _formKey.currentState!.save();
+                          String result =
+                              'username:$_userName\nemail:$_email\nSifre:$_password';
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.orange.shade300,
+                              content: Text(
+                                result,
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ),
+                          );
+                          _formKey.currentState!.reset();
+                        }
+                      },
+                      child: Text('Onayla'),
+                    ),
+                  ],
                 ),
-                Container(
-                  child: Text(
-                    "E-mail adresinle kolayca Swapp'e katıl",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(28),
-                  //padding: EdgeInsets.only(top: 125, bottom: 125),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.purple),
-                  width: 280,
-                  height: 42,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 12, top: 10, bottom: 3),
-                    child: Text('E-mail',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white70,
-                        )),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 12, top: 10, bottom: 3),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 210, 158, 219)),
-                        onPressed: () {},
-                        child: Container(
-                            padding: EdgeInsets.only(bottom: 3),
-                            child: const Text('Devam Et',
-                                textAlign: TextAlign.end)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ));
+        ],
+      ),
+    ));
   }
 }
